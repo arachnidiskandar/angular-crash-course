@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Todo } from 'src/app/models/Todo';
-import { TodoService } from '../../services/todo.service'
+import { TodoService } from '../../services/todo.service';
 
 @Component({
   selector: 'app-todo-item',
@@ -9,13 +9,14 @@ import { TodoService } from '../../services/todo.service'
 })
 export class TodoItemComponent implements OnInit {
   @Input() todo: Todo;
+  @Output() deleteTodo: EventEmitter<Todo> = new EventEmitter();
 
   constructor(private todoService: TodoService) { }
 
   ngOnInit() {
   }
 
-  setClasses() { 
+  setClasses() {
     let classes = {
       todo: true,
       'is-complete': this.todo.completed
@@ -25,11 +26,10 @@ export class TodoItemComponent implements OnInit {
   //Qnd o checkbox for clickado, vai mudar o estado do to-do e atualizar no "server".
   onToogle(todo) {
     todo.completed = !todo.completed;
-    this.todoService.toogleCompleted(todo).subscribe(todo =>{
-      console.log(todo)
-    });
+    this.todoService.toogleCompleted(todo).subscribe(todo =>
+      console.log(todo));
   }
   onDelete(todo) {
-    console.log("delete");
+    this.deleteTodo.emit(todo);
   }
 }
