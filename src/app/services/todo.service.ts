@@ -32,7 +32,7 @@ export class TodoService {
 
   deleteTodo(todo: Todo) {
     const url = `${ this.todosUrl }/${ todo.id }`;
-    this.http.delete(url, httpOptions);
+    return this.http.delete(url, httpOptions);
   }
 
 }
